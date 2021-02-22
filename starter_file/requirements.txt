@@ -1,0 +1,9 @@
+kaggle
+kaggle-cli
+joblib
+azureml
+pip --upgrade
+azureml.core
+azureml-dataset-runtime --upgrade
+azureml.widgets
+azureml.train
