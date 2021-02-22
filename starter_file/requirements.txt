@@ -1,9 +1,10 @@
 kaggle
 kaggle-cli
 joblib
+numpy==1.19.3
+pandas
 azureml
-pip --upgrade
 azureml.core
-azureml-dataset-runtime --upgrade
+azureml-dataset-runtime
 azureml.widgets
 azureml.train

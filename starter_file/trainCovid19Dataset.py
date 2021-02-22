@@ -1,15 +1,8 @@
-# Create .kaggledirectory to store kaggle's Api token
-mkdir -p ~/.kaggle
-cp ~/sandbox/sandbox_env/Udacity/kaggle.json ~/.kaggle/
-cat ~/.kaggle/kaggle.json 
-chmod 600 ~/.kaggle/kaggle.json
-
-import joblib
 import argparse
 import os
-import kaggle
 import numpy as np
 import pandas as pd
+from shutil import copyfile
 
 from zipfile import ZipFile
 from sklearn.linear_model import LogisticRegression
@@ -21,21 +14,29 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 #from azureml.core import Dataset, Datastore
 #from azureml.data.datapath import DataPath
 
+# Create .kaggledirectory to store kaggle's Api token
+os.mkdir("~/.kaggle") 
+copyfile("~/sandbox/sandbox_env/Udacity/kaggle.json", "~/.kaggle/")
+# cat ~/.kaggle/kaggle.json 
+os.chmod("~/.kaggle/kaggle.json", 600)
+
 # Download dataset from kaggle
-~/.local/bin/kaggle datasets download -d gpreda/covid-world-vaccination-progress -p ./starter_file/kaggle/
+# ~/.local/bin/kaggle datasets download -d gpreda/covid-world-vaccination-progress -p ./starter_file/kaggle/
+import kaggle
+kaggle.api.authenticate()
+kaggle.api.dataset_download_files('gpreda/covid-world-vaccination-progress', path='./starter_file/kaggle/', unzip=True)
 
 with ZipFile('./starter_file/kaggle/covid-world-vaccination-progress.zip', 'r') as datasetZip:
    # Extract all the contents of zip file in current directory
    datasetZip.extractall('./starter_file/kaggle')
     
-path = "./starter_file/kaggle/country_vaccinations.csv"
 #ds = TabularDatasetFactory.from_delimited_files(path=datastore_path, infer_column_types=True, separator=',', header=True, encoding='utf8')
 run = Run.get_context()  
 
 data = pd.read_csv("./starter_file/kaggle/country_vaccinations.csv").dropna()
+
 def clean_data(data):
     # Clean and one hot encode data
-    #x_df = data.to_pandas_dataframe().dropna()
     x_df = data
     # take the latest number of vaccinated people by country
     x_df['used_Vaccine'] = np.where(x_df.groupby('country')['total_vaccinations'].transform('max') > 0, True, False)
@@ -55,7 +56,7 @@ def clean_data(data):
     
     return x_df,y_df
     
- def main():
+def main():
     # Add arguments to script
     parser = argparse.ArgumentParser()
     parser.add_argument('--C', type=float, default=1.0, help="Inverse of regularization strength. Smaller values cause stronger regularization")
