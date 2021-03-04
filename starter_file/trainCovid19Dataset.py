@@ -48,7 +48,7 @@ def clean_data(data):
     
     countries = pd.get_dummies(x_df.country, prefix="country")
     iso_codes = pd.get_dummies(x_df.iso_code, prefix="iso_code")
-    vaccines = pd.get_dummies(x_df.vaccines, prefix="vaccine")
+    vaccines = pd.get_dummies(x_df.vaccines, prefix="vaccines")
     source_names = pd.get_dummies(x_df.source_name, prefix="source")
     #source_websites = pd.get_dummies(x_df.source_name, prefix="source_website")
     x_df.drop(["country","iso_code","vaccines","source_name","source_website"], inplace=True, axis=1)
@@ -57,7 +57,7 @@ def clean_data(data):
     x_df['month']= pd.DatetimeIndex(x_df['date']).month
     x_df['date']=pd.to_datetime(x_df['date'], format='%Y-%m-%d')
     x_df['date']= pd.DatetimeIndex(x_df['date']).year
-    
+    print(x_df)
     return x_df,y_df
     
 def main():
@@ -67,14 +67,16 @@ def main():
     parser.add_argument('--max_iter', type=int, default=100, help="Maximum number of iterations to converge")
     args = parser.parse_args()  
    
-    run.log("Regularization Strength:", np.float(args.C))
+    #run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
     
     x, y = clean_data(data)
 
     # TODO: Split data into train and test sets.
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state = 42,shuffle=True)
-    model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state = 70,shuffle=True)
+    print(x_train)
+    print(x_test)
+    model = LogisticRegression(C=args.C,max_iter=args.max_iter,multi_class='ovr').fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
    
