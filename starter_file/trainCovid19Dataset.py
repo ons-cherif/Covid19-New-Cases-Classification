@@ -3,6 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 from shutil import copyfile
+import shutil
 
 from zipfile import ZipFile
 from sklearn.linear_model import LogisticRegression
@@ -14,26 +15,29 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 #from azureml.core import Dataset, Datastore
 #from azureml.data.datapath import DataPath
 
-# Create .kaggledirectory to store kaggle's Api token
-os.mkdir("~/.kaggle") 
-copyfile("~/sandbox/sandbox_env/Udacity/kaggle.json", "~/.kaggle/")
-# cat ~/.kaggle/kaggle.json 
-os.chmod("~/.kaggle/kaggle.json", 600)
+# # Create .kaggle directory to store kaggle's Api token
+# path = ".kaggle"
+# if os.path.exists(path):
+#     print(path + ': exists')
+# else:
+#     os.mkdir(path) 
+# #copyfile("kaggle/kaggle.json", path+"/")
+# shutil.copy("kaggle/kaggle.json", path)
+# # cat ~/.kaggle/kaggle.json 
+# os.chmod(".kaggle/kaggle.json", 600)
 
+os.environ['KAGGLE_USERNAME']= 'ocherif'
+os.environ['KAGGLE_KEY']= 'cb037f99cae382b7a67c68f8048e01be'
 # Download dataset from kaggle
 # ~/.local/bin/kaggle datasets download -d gpreda/covid-world-vaccination-progress -p ./starter_file/kaggle/
 import kaggle
 kaggle.api.authenticate()
-kaggle.api.dataset_download_files('gpreda/covid-world-vaccination-progress', path='./starter_file/kaggle/', unzip=True)
-
-with ZipFile('./starter_file/kaggle/covid-world-vaccination-progress.zip', 'r') as datasetZip:
-   # Extract all the contents of zip file in current directory
-   datasetZip.extractall('./starter_file/kaggle')
+kaggle.api.dataset_download_files('gpreda/covid-world-vaccination-progress', path='kaggle/', unzip=True)
     
 #ds = TabularDatasetFactory.from_delimited_files(path=datastore_path, infer_column_types=True, separator=',', header=True, encoding='utf8')
 run = Run.get_context()  
 
-data = pd.read_csv("./starter_file/kaggle/country_vaccinations.csv").dropna()
+data = pd.read_csv("kaggle/country_vaccinations.csv").dropna()
 
 def clean_data(data):
     # Clean and one hot encode data
