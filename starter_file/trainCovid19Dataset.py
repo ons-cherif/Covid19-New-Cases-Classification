@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from shutil import copyfile
 import shutil
+import joblib
 
 from zipfile import ZipFile
 from sklearn.linear_model import LogisticRegression
@@ -15,44 +16,32 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 #from azureml.core import Dataset, Datastore
 #from azureml.data.datapath import DataPath
 
-# # Create .kaggle directory to store kaggle's Api token
-# path = ".kaggle"
-# if os.path.exists(path):
-#     print(path + ': exists')
-# else:
-#     os.mkdir(path) 
-# #copyfile("kaggle/kaggle.json", path+"/")
-# shutil.copy("kaggle/kaggle.json", path)
-# # cat ~/.kaggle/kaggle.json 
-# os.chmod(".kaggle/kaggle.json", 600)
-
 os.environ['KAGGLE_USERNAME']= 'ocherif'
 os.environ['KAGGLE_KEY']= 'cb037f99cae382b7a67c68f8048e01be'
-# Download dataset from kaggle
-# ~/.local/bin/kaggle datasets download -d gpreda/covid-world-vaccination-progress -p ./starter_file/kaggle/
+
 import kaggle
 kaggle.api.authenticate()
 kaggle.api.dataset_download_files('gpreda/covid-world-vaccination-progress', path='kaggle/', unzip=True)
     
-#ds = TabularDatasetFactory.from_delimited_files(path=datastore_path, infer_column_types=True, separator=',', header=True, encoding='utf8')
 run = Run.get_context()  
 
-data = pd.read_csv("kaggle/country_vaccinations.csv").dropna()
+x_df = pd.read_csv("kaggle/country_vaccinations.csv")
 
-def clean_data(data):
+def clean_data(x_df):
     # Clean and one hot encode data
-    x_df = data
+    x_df.drop(["people_fully_vaccinated_per_hundred"], inplace=True, axis=1)
+    x_df = x_df.fillna(0)
     # take the latest number of vaccinated people by country
-    x_df['used_Vaccine'] = np.where(x_df.groupby('country')['total_vaccinations'].transform('max') > 0, True, False)
+    x_df['used_Vaccine'] = np.where(x_df.people_fully_vaccinated > 0, True, False)
     y_df = x_df.pop("used_Vaccine").apply(lambda s: 1 if s == True else 0)
     
-    countries = pd.get_dummies(x_df.country, prefix="country")
+    #countries = pd.get_dummies(x_df.country, prefix="country")
     iso_codes = pd.get_dummies(x_df.iso_code, prefix="iso_code")
     vaccines = pd.get_dummies(x_df.vaccines, prefix="vaccines")
     source_names = pd.get_dummies(x_df.source_name, prefix="source")
     #source_websites = pd.get_dummies(x_df.source_name, prefix="source_website")
     x_df.drop(["country","iso_code","vaccines","source_name","source_website"], inplace=True, axis=1)
-    x_df = x_df.join([countries,iso_codes,vaccines,source_names])
+    x_df = x_df.join([iso_codes,vaccines,source_names])
     
     x_df['month']= pd.DatetimeIndex(x_df['date']).month
     x_df['date']=pd.to_datetime(x_df['date'], format='%Y-%m-%d')
@@ -70,12 +59,13 @@ def main():
     #run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
     
-    x, y = clean_data(data)
+    x, y = clean_data(x_df)
 
     # TODO: Split data into train and test sets.
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state = 70,shuffle=True)
-    print(x_train)
-    print(x_test)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state = 42,shuffle=True)
+    x_train.to_csv(path_or_buf='x_trainToCSV.csv',header = True, encoding='UTF8',index=False)
+    y_train.to_csv(path_or_buf='y_trainToCSV.csv',header = True, encoding='UTF8',index=False)
+    
     model = LogisticRegression(C=args.C,max_iter=args.max_iter,multi_class='ovr').fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
