@@ -1,5 +1,9 @@
-import argparse
 import os
+#os.environ['KAGGLE_USERNAME']= 'ocherif'
+#os.environ['KAGGLE_KEY']= 'cb037f99cae382b7a67c68f8048e01be'
+#import kaggle
+import argparse
+
 import numpy as np
 import pandas as pd
 import shutil
@@ -11,13 +15,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from azureml.core.run import Run
 
-
-os.environ['KAGGLE_USERNAME']= 'ocherif'
-os.environ['KAGGLE_KEY']= 'cb037f99cae382b7a67c68f8048e01be'
-
-import kaggle
-kaggle.api.authenticate()
-kaggle.api.dataset_download_files('gpreda/covid-world-vaccination-progress', path='kaggle/', unzip=True)
+#kaggle.api.authenticate()
+#kaggle.api.dataset_download_files('gpreda/covid-world-vaccination-progress', path='kaggle/', unzip=True)
     
 run = Run.get_context()  
 
@@ -57,8 +56,8 @@ def main():
 
     # TODO: Split data into train and test sets.
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state = 42,shuffle=True)
-    x_train.to_csv(path_or_buf='x_trainToCSV.csv',header = True, encoding='UTF8',index=False)
-    y_train.to_csv(path_or_buf='y_trainToCSV.csv',header = True, encoding='UTF8',index=False)
+    #x_train.to_csv(path_or_buf='x_trainToCSV.csv',header = True, encoding='UTF8',index=False)
+    #y_train.to_csv(path_or_buf='y_trainToCSV.csv',header = True, encoding='UTF8',index=False)
     
     model = LogisticRegression(C=args.C,max_iter=args.max_iter,multi_class='ovr').fit(x_train, y_train)
 
