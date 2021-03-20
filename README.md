@@ -15,6 +15,8 @@ But, if this were our first project using Microsoft Azure, we just need to follo
 
 As defined by the official documentation of Microsoft: 
 > A Workspace is a fundamental resource for machine learning in Azure Machine Learning. You use a workspace to experiment, train, and deploy machine learning models. Each workspace is tied to an Azure subscription and resource group, and has an associated SKU.
+> -- <cite>[Microsoft Azure Worksapce ][1]</cite>
+
 
 
 ## Dataset
@@ -56,3 +58,8 @@ As defined by the official documentation of Microsoft:
 
 ## Standout Suggestions
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+
+
+## References:
+
+[1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
