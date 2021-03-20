@@ -14,8 +14,9 @@ But, if this were our first project using Microsoft Azure, we just need to follo
 ### Setup a Workspace:
 
 As defined by the official documentation of Microsoft: 
-> A Workspace is a fundamental resource for machine learning in Azure Machine Learning. You use a workspace to experiment, train, and deploy machine learning models. Each workspace is tied to an Azure subscription and resource group, and has an associated SKU.
-> -- <cite>[Microsoft Azure Worksapce ][1]</cite>
+> A Workspace is a fundamental resource for machine learning in Azure Machine Learning. You use a workspace to experiment, train, and deploy machine learning models. <br>
+> Each workspace is tied to an Azure subscription and resource group, and has an associated SKU.
+> -- <cite>[Microsoft Azure Worksapce][1]</cite>
 
 
 
