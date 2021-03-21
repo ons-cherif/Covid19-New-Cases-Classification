@@ -1,5 +1,5 @@
 {
-    "subscription_id": "f9d5a085-54dc-4215-9ba6-dad5d86e60a0",
-    "resource_group": "aml-quickstarts-139016",
-    "workspace_name": "quick-starts-ws-139016"
+    "subscription_id": "c04b3d3f-4994-454d-96ff-aa3f2050b57f",
+    "resource_group": "testingMLFunctionnalities",
+    "workspace_name": "wsptest"
 }
