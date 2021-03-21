@@ -45,16 +45,18 @@ def clean_data(x_df):
         "total_vaccinations_per_hundred",
         "people_vaccinated_per_hundred",
         "people_fully_vaccinated_per_hundred",
-        "new_vaccinations_smoothed_per_million"],
+        "new_vaccinations_smoothed_per_million",
+        "total_vaccinations"],
          inplace=True, axis=1)
     x_df = x_df.join([iso_codes,continent])
     
     x_df['date']=pd.to_datetime(x_df['date'])
     x_df['date']=x_df['date'].map(dt.datetime.toordinal)
    
-    x_df['total_vaccinations'] =  x_df['total_vaccinations'].astype(float)
+    #x_df['total_vaccinations'] =  x_df['total_vaccinations'].astype(float)
     
-    y_df = x_df.pop("total_vaccinations").apply(lambda s: 1 if s > 1 else 0)
+    y_df = x_df.pop("new_cases").apply(lambda s: 1 if s > 1 else 0)
+    #y_df = x_df['new_cases']
     return x_df,y_df
     
 def main():
