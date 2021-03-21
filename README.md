@@ -11,7 +11,7 @@ A lot of researchs has revealed that the infection's globalization was caused by
  
 
 ## Project Details
-* [Project Architecture](#project Architecture)
+* [Project Architecture](#project-architecture)
 * [Project Set Up and Installation](#project-set-up-and-installation)
 * [Dataset](#dataset)
   * [Overview](#overview)
@@ -34,27 +34,30 @@ A lot of researchs has revealed that the infection's globalization was caused by
 ![](screenshots/Project_Architecture.png)
 
 
-## Project Set Up and Installation
+## Project Set-Up and Installation
 
 Being familiar with Microsoft Azure and how it works, it was pretty simple to run this project.<br>
 
-We need just to install required libraries already been gathered within the requirements.txt file under the starter_file directory. I used the microsoft Azure ML Studio embedded Terminal to run `pip install -r requirements.txt` and install the desired packages. <br>
+We just need to install required libraries already been gathered within the requirements.txt file under the starter_file directory. I used the Microsoft Azure ML Studio embedded Terminal to run `pip install -r requirements.txt` and install the desired packages. <br>
 
 But, if this were our first project using Microsoft Azure, we just need to follow the below steps:<br>
 
-### Create a Microsoft Azure account
+### Create a Microsoft Azure account: Since it's a Udacity project, I used the already existing Microsoft subscription `Udacity CloudLabs Sub - 15` and a resource group `aml-quickstarts-141033`.
+
+
 ### Create a Workspace:
 
-As defined and shown within Microsoft's documentation: <br>
+A workspace is a top-level resource needed to use all services within Microsoft Machine Learning. As defined within Microsoft's documentation: <br>
 > A Workspace is a fundamental resource for machine learning in Azure Machine Learning. You use a workspace to experiment, train, and deploy machine learning models. <br>
-> Each workspace is tied to an Azure subscription and resource group, and has an associated SKU.
+> Each workspace is tied to an Azure subscription and resource group and has an associated SKU.
 > -- <cite>[Microsoft Azure Worksapce][1]</cite>
 
-Actually, a workspace is the top-level resource needed to use all services within Microsoft Machine Learning.
+We can use the same documentation to create a workspace, but for my case and since I am using Udacity's VM, we have a pre-created workspace `quick-starts-ws-141033`
+
 
 ### Set up a Compute Instance:
 
-Once we created a workspace to hold all our experiments and trained models, 
+Once we created a workspace to hold all our experiments and trained models, we need to create a compute instance to 
 
 
 ## Dataset
