@@ -1,11 +1,30 @@
-*NOTE:* This file is a template that you can use to create the README for your project. The *TODO* comments below will highlight the information you should be sure to include.
 
-# Your Project Title Here
+# Covid19 New Cases Classification
 
 *TODO:* Write a short introduction to your project.
 
 ## Project Set Up and Installation
-*OPTIONAL:* If your project has any special installation steps, this is where you should put it. To turn this project into a professional portfolio project, you are encouraged to explain how to set up this project in AzureML.
+
+Being familiar with Microsoft Azure and how it works, it was pretty simple to run this project.<br>
+
+We need just to install required libraries already been gathered within the requirements.txt file under the starter_file directory. I used the microsoft Azure ML Studio embedded Terminal to run `pip install -r requirements.txt` and install the desired packages. <br>
+
+But, if this were our first project using Microsoft Azure, we just need to follow the below steps:<br>
+
+### Create a Microsoft Azure account
+### Create a Workspace:
+
+As defined and shown within Microsoft's documentation: <br>
+> A Workspace is a fundamental resource for machine learning in Azure Machine Learning. You use a workspace to experiment, train, and deploy machine learning models. <br>
+> Each workspace is tied to an Azure subscription and resource group, and has an associated SKU.
+> -- <cite>[Microsoft Azure Worksapce][1]</cite>
+
+Actually, a workspace is the top-level resource needed to use all services within Microsoft Machine Learning.
+
+### Set up a Compute Instance:
+
+Once we created a workspace to hold all our experiments and trained models, 
+
 
 ## Dataset
 
@@ -46,3 +65,8 @@
 
 ## Standout Suggestions
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+
+
+## References:
+
+[1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
