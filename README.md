@@ -1,7 +1,38 @@
 
 # Covid19 New Cases Classification
 
-*TODO:* Write a short introduction to your project.
+Since December 2019 we have been facing a global pandemic that changed the world for ever.
+The origin of Corona Virus was Wuhan-China and from there it passed from epidemic to pandemic. <br>
+A lot of researchs has revealed that the infection's globalization was caused by a mutation in the spike protein of the SARS-CoV-2, that has dramatically increased its transmissibility between humans and animals.<br>
+ 
+ Thus several lockdowns and preventions that was globally made, we faced a death rate_considered the highest ever known during the humanity existance_.<br>
+ During this project we will be using a Covid19 dataset that gathers all possible information about its propagation and the globally occured damage. <br>
+ This project is about training a Machine Learning model to predict new cases and their origin using Microsoft Azure ML Studio to prepare, train and deploy the best model as a webservice.
+ 
+
+## Project Details
+* [Project Architecture](#project Architecture)
+* [Project Set Up and Installation](#project-set-up-and-installation)
+* [Dataset](#dataset)
+  * [Overview](#overview)
+  * [Task](#task)
+  * [Access](#access)
+* [Automated ML](#automated-ml)
+  * [Results](#results)
+* [Hyperparameter Tuning](#hyperparameter-tuning)
+  * [Results](#results)
+* [Model Deployment](#model-deployment)
+* [Screen Recording](#screen-recording)
+* [Standout Suggestions](standout-suggestions)
+* [Improvements and Future Work](#improvements-and-future-work)
+* [References](#references)
+
+## Project Architecture
+
+*Figure 1 : The following diagram shows the overall architecture and workflow of the project.*
+
+![](screenshots/Project_Architecture.png)
+
 
 ## Project Set Up and Installation
 
