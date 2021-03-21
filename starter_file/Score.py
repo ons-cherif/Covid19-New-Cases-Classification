@@ -10,6 +10,7 @@ def init():
     model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'automl_covid19_model.pkl')
     print("Found model:", os.path.isfile(model_path))
     model = joblib.load(model_path)
+    print ("model initialized" + time.strftime("%H:%M:%S"))
 
 def run(data):
     try:
@@ -18,6 +19,7 @@ def run(data):
         #data = json.loads(data)['data'] # raw = pd.read_json(data) 
         #data = pd.DataFrame.from_dict(data)
         result = model.predict(data)
+        print ("Prediction created" + time.strftime("%H:%M:%S"))
         # You can return any data type, as long as it is JSON serializable.
         return result.tolist()
     except Exception as e:
