@@ -29,6 +29,7 @@ def clean_data(x_df):
     continent = pd.get_dummies(x_df.continent, prefix="continent")
     x_df.drop([
         "location",
+        "date",
         "iso_code",
         "continent",
         "hosp_patients_per_million",
@@ -50,13 +51,8 @@ def clean_data(x_df):
          inplace=True, axis=1)
     x_df = x_df.join([iso_codes,continent])
     
-    x_df['date']=pd.to_datetime(x_df['date'])
-    x_df['date']=x_df['date'].map(dt.datetime.toordinal)
-   
-    #x_df['total_vaccinations'] =  x_df['total_vaccinations'].astype(float)
     
     y_df = x_df.pop("new_cases").apply(lambda s: 1 if s > 1 else 0)
-    #y_df = x_df['new_cases']
     return x_df,y_df
     
 def main():
