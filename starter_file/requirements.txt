@@ -1,4 +1,4 @@
-scikit-learn
+xgboost==0.90
 azureml-mlflow
 azureml-core
 azureml.train.automl
