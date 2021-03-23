@@ -38,12 +38,9 @@ A lot of researchs has revealed that the infection's globalization was caused by
 
 Being familiar with Microsoft Azure and how it works, it was pretty simple to run this project.<br>
 
-We just need to install required libraries already been gathered within the requirements.txt file under the starter_file directory. I used the Microsoft Azure ML Studio embedded Terminal to run `pip install -r requirements.txt` and install the desired packages. <br>
+Since it's a Udacity project, there is an existing Microsoft subscription `Udacity CloudLabs Sub - 15` and a resource group `aml-quickstarts-141033`, but for my case I used my personal Microsoft Azure. 
 
-But, if this were our first project using Microsoft Azure, we just need to follow the below steps:<br>
-
-### Create a Microsoft Azure account: Since it's a Udacity project, I used the already existing Microsoft subscription `Udacity CloudLabs Sub - 15` and a resource group `aml-quickstarts-141033`.
-
+We can resume this envioronement set up to three major sections:<br>
 
 ### Create a Workspace:
 
@@ -52,13 +49,20 @@ A workspace is a top-level resource needed to use all services within Microsoft 
 > Each workspace is tied to an Azure subscription and resource group and has an associated SKU.
 > -- <cite>[Microsoft Azure Worksapce][1]</cite>
 
-We can use the same documentation to create a workspace, but for my case and since I am using Udacity's VM, we have a pre-created workspace `quick-starts-ws-141033`
-
+I used the same documentation to create a workspace, but if we were using Udacity's Account, there is a pre-created workspace named `quick-starts-ws-141033`.
 
 ### Set up a Compute Instance:
 
-Once we created a workspace to hold all our experiments and trained models, we need to create a compute instance to 
+Once we created a workspace to hold all our experiments and trained models, we need to create a compute instance to run our scripts using Notebboks under Studio ML.
+A compute Instance helps data science community to use pre-built Azure Machine Learning functionalities, manage security and performance. 
 
+Microsoft defines a compute instance as: <br>
+> A compute instance is a fully managed cloud-based workstation optimized for your machine learning development environment.<br>
+> Azure Machine Learning compute instance enables you to author, train, and deploy models in a fully integrated notebook experience in your workspace.<br>
+> -- <cite>[Microsoft Azure Compute Instance][2]</cite>
+
+
+We just need to install required libraries already been gathered within the requirements.txt file under the starter_file directory. I used the Microsoft Azure ML Studio embedded Terminal to run `pip install -r requirements.txt` and install the desired packages. <br>
 
 ## Dataset
 
@@ -104,3 +108,4 @@ Once we created a workspace to hold all our experiments and trained models, we n
 ## References:
 
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
+[2]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance
