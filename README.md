@@ -77,6 +77,27 @@ We just need to install required libraries already been gathered within the requ
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
+### Overview
+
+Automated machine learning is the process of automating the time consuming, iterative tasks of machine learning model development. 
+
+AutoML is used to automate the repetitive tasks by creating a number of pipelines in parallel that try different algorithms and parameters. This iterates through ML  algorithms paired with feature selections, where each iteration produces a model with a training score. The higher the score, the better the model is considered to fit the   data. This process terminates when the exit criteria defined in the experiment is satisfied.
+
+### AutoML Configuration
+
+Instantiate an AutoMLConfig object for AutoML Configuration.
+
+The parameters used here are:
+
+* `n_cross_validation = 3` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
+* `primary_metric = 'accuracy'` : The primary metric parameter determines the metric to be used during model training for optimization. Accuracy primary metric is chosen for binary classification dataset.
+* `experiment_timeout_minutes = 30` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
+* `max_concurrent_iterations = 4` : To help manage child runs and when they can be performed, we match the number of maximum concurrent iterations of our experiment to the number of nodes in the cluster. So, we get a dedicated cluster per experiment.
+* `task = 'classification'` : This specifies the experiment type as classification.
+* `compute_target = cpu_cluster` : Azure Machine Learning Managed Compute is a managed service that enables the ability to train machine learning models on clusters of Azure virtual machines. Here compute target is set to cpu_cluster which is already defined with 'STANDARD_D2_V2' and maximum nodes equal to 4.
+* `training_data = train_data` : This specifies the training data to be used in this experiment which is set to train_data which is a part of the dataset uploaded to the datastore.
+* `label_column_name = 'DEATH_EVENT'` : The target column here is set to DEATH_EVENT which has values 1 if the patient deceased or 0 if the patient survived.
+* `featurization= 'auto'` : This indicates that as part of preprocessing, data guardrails and featurization steps are performed automatically.
 
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
