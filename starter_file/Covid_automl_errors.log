@@ -1,0 +1,3 @@
+2021-03-23 11:49:57.900 - INFO - 30600 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-23 13:34:41.781 - INFO - 30600 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-23 18:46:33.163 - INFO - 19448 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
