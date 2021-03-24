@@ -67,13 +67,43 @@ We just need to install required libraries already been gathered within the requ
 ## Dataset
 
 ### Overview
-*TODO*: Explain about the data you are using and where you got it from.
+
+I used a <cite>[Covid19 World Dataset][3]</cite> provided by *Our World in Data* Github repository containing the historical data about this pandemic.<br>
 
 ### Task
-*TODO*: Explain the task you are going to be solving with this dataset and the features you will be using for it.
+
+Generally speaking, Covid19 pandemic is coming from a virus mutation called SARS. Within this project I chose to train a model for new case predictions per country to provide further visibility & statistics.<br>
+The task is to classify `new_cases` to `0` or `1` i.e to predict new Covid19 infections. <br>
+
+This dataset contains a total number of 59 feature. Below an explanation of some of them:
+
+  * `iso_code` : ISO 3166-1 alpha-3 – three-letter country codes.
+  * `continent` : Continent of the geographical location
+  * `location` : Geographical location
+  * `total_cases` : Total confirmed cases of COVID-19
+  * `total_deaths` : Total deaths attributed to COVID-19
+  * `new_deaths` : New deaths attributed to COVID-19
+  * `reproduction_rate` : Real-time estimate of the effective reproduction rate (R) of COVID-19.
+  * `icu_patients` : Number of COVID-19 patients in intensive care units (ICUs) on a given day
+  * `hosp_patients` : Number of COVID-19 patients in hospital on a given day.
+  * `new_tests` : New tests for COVID-19 (only calculated for consecutive days)
+  * `total_tests` : Total tests for COVID-19.
+  * `tests_units` : Units used by the location to report its testing data
+  * `total_vaccinations` : Total number of COVID-19 vaccination doses administered
+  * `people_vaccinated` : Total number of people who received at least one vaccine dose.
+  * `population` : Population in 2020.
+  * `population_density` : Number of people divided by land area, measured in square kilometers, most recent year available
+  * `cardiovasc_death_rate` : Death rate from cardiovascular disease in 2017 (annual number of deaths per 100,000 people)
+  * `diabetes_prevalence` : Diabetes prevalence (% of population aged 20 to 79) in 2017
+  * `life_expectancy` : Life expectancy at birth in 2019.
+  * `new_cases` : New confirmed cases of COVID-19.
+Out of a 59 feature, I will be using only 38 including the ones mentioned above, along with my target column: `new_cases`. 
 
 ### Access
 *TODO*: Explain how you are accessing the data in your workspace.
+In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown below with the screenshot:
+
+*TODO*: screenshot of dataset 
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
@@ -134,3 +164,4 @@ The parameters used here are:
 
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
 [2]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance
+[3]: https://covid.ourworldindata.org/data/owid-covid-data.csv
