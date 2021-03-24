@@ -5,7 +5,7 @@ Since December 2019 we have been facing a global pandemic that changed the world
 The origin of Corona Virus was Wuhan-China and from there it passed from epidemic to pandemic. <br>
 A lot of researchs has revealed that the infection's globalization was caused by a mutation in the spike protein of the SARS-CoV-2, that has dramatically increased its transmissibility between humans and animals.<br>
  
- Thus several lockdowns and preventions that was globally made, we faced a death rate_considered the highest ever known during the humanity existance_.<br>
+ Thus several lockdowns and preventions has been globally applied, we faced a considerable death rate all over the world.<br>
  During this project we will be using a Covid19 dataset that gathers all possible information about its propagation and the globally occured damage. <br>
  This project is about training a Machine Learning model to predict new cases and their origin using Microsoft Azure ML Studio to prepare, train and deploy the best model as a webservice.
  
@@ -89,15 +89,19 @@ Instantiate an AutoMLConfig object for AutoML Configuration.
 
 The parameters used here are:
 
-* `n_cross_validation = 3` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
+* `n_cross_validation = 5` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
 * `primary_metric = 'accuracy'` : The primary metric parameter determines the metric to be used during model training for optimization. Accuracy primary metric is chosen for binary classification dataset.
-* `experiment_timeout_minutes = 30` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
+* `enable_early_stopping = True` : 
+* `experiment_timeout_hours = 30` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
 * `max_concurrent_iterations = 4` : To help manage child runs and when they can be performed, we match the number of maximum concurrent iterations of our experiment to the number of nodes in the cluster. So, we get a dedicated cluster per experiment.
 * `task = 'classification'` : This specifies the experiment type as classification.
 * `compute_target = cpu_cluster` : Azure Machine Learning Managed Compute is a managed service that enables the ability to train machine learning models on clusters of Azure virtual machines. Here compute target is set to cpu_cluster which is already defined with 'STANDARD_D2_V2' and maximum nodes equal to 4.
 * `training_data = train_data` : This specifies the training data to be used in this experiment which is set to train_data which is a part of the dataset uploaded to the datastore.
-* `label_column_name = 'DEATH_EVENT'` : The target column here is set to DEATH_EVENT which has values 1 if the patient deceased or 0 if the patient survived.
+* `label_column_name = 'new_cases'` : The target column here is set to DEATH_EVENT which has values 1 if the patient deceased or 0 if the patient survived.
 * `featurization= 'auto'` : This indicates that as part of preprocessing, data guardrails and featurization steps are performed automatically.
+* `model_explainability=True`: 
+* `path=project_folder`:
+* `debug_log = "Covid_automl_errors.log"`:
 
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
