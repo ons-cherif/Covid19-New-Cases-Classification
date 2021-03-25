@@ -100,14 +100,19 @@ This dataset contains a total number of 59 feature. Below an explanation of some
 Out of a 59 feature, I will be using only 38 including the ones mentioned above, along with my target column: `new_cases`. 
 
 ### Access
-*TODO*: Explain how you are accessing the data in your workspace.
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown below with the screenshot:
 
-*TODO*: screenshot of dataset 
+![](screenshots/Download&StoreDataset.png)
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
 ### Overview
+Exploring Automl, its utility and the way it works, makes me realize how I love this field and how much there is to learn from.
+I tried a wide range of settings and parameters, and what I can conclude is that whatever combination I used do really matter and directly impacts my model training.
+
+To start let's define what is Automl and whew we use it, and for that we cnat's find better then Microsft's documentation:
+> Automated machine learning, also referred to as automated ML or AutoML, is the process of automating the time consuming, iterative tasks of machine learning model development. It allows data scientists, analysts, and developers to build ML models with high scale, efficiency, and productivity all while sustaining model quality. 
+> --<cite>[Automated ML][4]</cite>
 
 Automated machine learning is the process of automating the time consuming, iterative tasks of machine learning model development. 
 
@@ -140,7 +145,21 @@ The parameters used here are:
 
 ## Hyperparameter Tuning
 *TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
+This is a repeatable process for each run of the experiment, specifying a random hyperparameter from a given list of choices. To prepare the HyperDrive configuration, we need to set three major parameters including:
 
+1- Specify a parameter sampler: since we are using the SKLearn LogisticRegression classifier we will be using:
+
+The inverse of regularization strength C with a default value of 1.0, you need to specify a discrete set of options to sample from.
+And, the maximum number of iterations taken for the solvers to converge max_iter
+2- Specify an early termination policy: Among three types, we decided to work with the Bandit Policy, classified as an aggressive saving, as it will terminate any job based on a slack criteria, and a frequency and delay interval for evaluation.
+
+slack_factor: Specified as a ratio used to calculate the allowed distance from the best performing experiment run.
+evaluation_interval: Reflects the frequency for applying the policy.
+delay_evaluation: Reflects the number of intervals for which to delay the first policy evaluation.
+3 - Create a SKLearn estimator to use later within the HyperDriveConfig definition.
+The estimator contains the source directory The path to the script directory, the compute target, and the entry script The name of the script to use along with the experiment.
+
+After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration.
 
 ### Results
 *TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
@@ -165,3 +184,4 @@ The parameters used here are:
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
 [2]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance
 [3]: https://covid.ourworldindata.org/data/owid-covid-data.csv
+[4]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
