@@ -101,7 +101,7 @@ Out of a 59 feature, I will be using only 38 including the ones mentioned above,
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
 
-![alt_text](starter_file/Screenshots/Download&StoreDataset.png)
+![alt_text](starter_file/Screenshots/Download&StoreDataset.PNG)
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
@@ -144,8 +144,6 @@ The parameters used here are:
 
 ## Hyperparameter Tuning
 
-*TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
-
 It is common for classification models to predict a continuous value as the probability of a given example belonging to each output class.<br>
 
 Since I am dealing with a binary classification problem based on labeled inputs and discrete outputs, I used a logistic regression algorithm from Scikit-learn to calculate probabilities of new cases by country based on several features within a training dataset.<br>
@@ -154,22 +152,35 @@ Using HyperDrive is like automating a manual process to figure out the best comb
 
 To prepare the HyperDrive configuration, we need to set three major parameters including:<br>
 
-*1- Specify a parameter sampler: * Since we are using the SKLearn LogisticRegression classifier we will be using:
+*1- Specify a parameter sampler: * There are three types of sampling: Bayesian, random or Grid sampling, which supports discrete hyperparameters with the possibility to exhaustively search over the search space with a possibility of an early termination of low-performance runs.
 
-* *`--C` : * The inverse of regularization strength C with a default value of 1.0, you need to specify a discrete set of options to sample from.
-* `--max_iter`:  the maximum number of iterations taken for the solvers to converge max_iter
+Here is a code snippet of the GridSampling definition with 2 parameters:
 
-*2- Specify an early termination policy:* Among three types, we decided to work with the Bandit Policy, classified as an aggressive saving, as it will terminate any job based on slack criteria, and a frequency and delay interval for evaluation.
+``` 
+param_sampling = GridParameterSampling( 
+    {
+        '--C': choice(0.01, 0.1, 1, 10, 100), 
+        '--max_iter': choice(25, 50, 100,150)
+    }
+)
 
-slack_factor: Specified as a ratio used to calculate the allowed distance from the best performing experiment run.
-evaluation_interval: Reflects the frequency for applying the policy.
-delay_evaluation: Reflects the number of intervals for which to delay the first policy evaluation.
+``` 
+
+* `--C` :  The inverse of regularization strength `C` with a default value of 1.0, you need to specify a discrete set of options to sample from. I used a range between _0.01 and 100_ to test the limits of regularization strenght and what is it's effect on the model.
+* `--max_iter`:  the maximum number of iterations taken for the solvers to converge `max_iter`. I chose four max iteration parameters: _25, 50, 100 and 150_.
+
+*2- Specify an early termination policy:* Among three types, I decided to work with the Bandit Policy, classified as an _aggressive saving_, as it will terminate any job based on slack criteria, and a frequency and delay interval for evaluation.
+
+* `slack_factor`: Specified as a ratio used to calculate the allowed distance from the best performing experiment run.
+* `evaluation_interval`: Reflects the frequency for applying the policy.
+* `delay_evaluation`: Reflects the number of intervals for which to delay the first policy evaluation.
 
 *3- Create a SKLearn estimator:* 
-The estimator contains the source directory, the path to the script directory, the compute target and the entry script The name of the script to use along with the experiment.
+The estimator contains the source directory, the path to the script directory, the compute target and the entry script which refers to the script's name to use along with the experiment. In my case, I used [TrainCovid19Infections.py](starter_file/TrainCovid19Infections.py)
 
-After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration like showed below:
-
+After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration:
+* `primary_metric_name`: The name of the primary metric needs to exactly match the name of the metric logged by the training script. Since I chose the Accuracy metric in my training script, I will be using the same within my HyperDriveConfig.
+* `primary_metric_goal=PrimaryMetricGoal.MAXIMIZE`: This can be Maximize or Minimize, but I chose to Maximize the accuracy.
 ``` 
 hyperdrive_run_config = HyperDriveConfig(
                                    hyperparameter_sampling = param_sampling,
