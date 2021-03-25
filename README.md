@@ -30,7 +30,7 @@ A lot of researchs has revealed that the infection's globalization was caused by
 
 *Figure 1 : The following diagram shows the overall architecture and workflow of the project.*
 
-![](screenshots/Project_Architecture.png)
+![alt_text](screenshots/Project_Architecture.png)
 
 
 ## Project Set-Up and Installation
@@ -101,7 +101,7 @@ Out of a 59 feature, I will be using only 38 including the ones mentioned above,
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
 
-![alt_text](Screenshots/Download&StoreDataset.png)
+![alt_text](starter_file/Screenshots/Download&StoreDataset.png)
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
