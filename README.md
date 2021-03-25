@@ -99,9 +99,9 @@ This dataset contains a total number of 59 feature. Below an explanation of some
 Out of a 59 feature, I will be using only 38 including the ones mentioned above, along with my target column: `new_cases`. 
 
 ### Access
-In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown below with the screenshot:
+In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
 
-![](starter_file/Screenshots/Download&StoreDataset.png)
+![alt_text](Screenshots/Download&StoreDataset.png)
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
@@ -126,7 +126,7 @@ The parameters used here are:
 * `n_cross_validation = 5` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
 * `primary_metric = 'accuracy'` : The primary metric parameter determines the metric to be used during model training for optimization. Accuracy primary metric is chosen for binary classification dataset.
 * `enable_early_stopping = True` : 
-* `experiment_timeout_hours = 30` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
+* `experiment_timeout_hours = 1.0` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
 * `max_concurrent_iterations = 4` : To help manage child runs and when they can be performed, we match the number of maximum concurrent iterations of our experiment to the number of nodes in the cluster. So, we get a dedicated cluster per experiment.
 * `task = 'classification'` : This specifies the experiment type as classification.
 * `compute_target = cpu_cluster` : Azure Machine Learning Managed Compute is a managed service that enables the ability to train machine learning models on clusters of Azure virtual machines. Here compute target is set to cpu_cluster which is already defined with 'STANDARD_D2_V2' and maximum nodes equal to 4.
@@ -143,22 +143,44 @@ The parameters used here are:
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
 ## Hyperparameter Tuning
+
 *TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
-This is a repeatable process for each run of the experiment, specifying a random hyperparameter from a given list of choices. To prepare the HyperDrive configuration, we need to set three major parameters including:
 
-1- Specify a parameter sampler: since we are using the SKLearn LogisticRegression classifier we will be using:
+It is common for classification models to predict a continuous value as the probability of a given example belonging to each output class.<br>
 
-The inverse of regularization strength C with a default value of 1.0, you need to specify a discrete set of options to sample from.
-And, the maximum number of iterations taken for the solvers to converge max_iter
-2- Specify an early termination policy: Among three types, we decided to work with the Bandit Policy, classified as an aggressive saving, as it will terminate any job based on a slack criteria, and a frequency and delay interval for evaluation.
+Since I am dealing with a binary classification problem based on labeled inputs and discrete outputs, I used a logistic regression algorithm from Scikit-learn to calculate probabilities of new cases by country based on several features within a training dataset.<br>
+
+Using HyperDrive is like automating a manual process to figure out the best combination of parameters your model needs to prevent the over/down-fitting. It is a repeatable process for each run of the experiment, specifying a random hyperparameter from a given list of choices.<br>
+
+To prepare the HyperDrive configuration, we need to set three major parameters including:<br>
+
+*1- Specify a parameter sampler: * Since we are using the SKLearn LogisticRegression classifier we will be using:
+
+* *`--C` : * The inverse of regularization strength C with a default value of 1.0, you need to specify a discrete set of options to sample from.
+* `--max_iter`:  the maximum number of iterations taken for the solvers to converge max_iter
+
+*2- Specify an early termination policy:* Among three types, we decided to work with the Bandit Policy, classified as an aggressive saving, as it will terminate any job based on slack criteria, and a frequency and delay interval for evaluation.
 
 slack_factor: Specified as a ratio used to calculate the allowed distance from the best performing experiment run.
 evaluation_interval: Reflects the frequency for applying the policy.
 delay_evaluation: Reflects the number of intervals for which to delay the first policy evaluation.
-3 - Create a SKLearn estimator to use later within the HyperDriveConfig definition.
-The estimator contains the source directory The path to the script directory, the compute target, and the entry script The name of the script to use along with the experiment.
 
-After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration.
+*3- Create a SKLearn estimator:* 
+The estimator contains the source directory, the path to the script directory, the compute target and the entry script The name of the script to use along with the experiment.
+
+After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration like showed below:
+
+``` 
+hyperdrive_run_config = HyperDriveConfig(
+                                   hyperparameter_sampling = param_sampling,
+                                   primary_metric_name = 'Accuracy',
+                                   primary_metric_goal=PrimaryMetricGoal.MAXIMIZE,
+                                   max_total_runs=100,
+                                   max_concurrent_runs = 3,
+                                   policy = early_termination_policy,
+                                   estimator = estimator)
+``` 
+
 
 ### Results
 *TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
@@ -178,7 +200,6 @@ After creating the HyperDriveConfig using the mentioned above parameters, we sub
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
 
 
-## References:
 
 
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
