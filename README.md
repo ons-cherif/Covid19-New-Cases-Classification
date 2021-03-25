@@ -1,4 +1,3 @@
-
 # Covid19 New Cases Classification
 
 Since December 2019 we have been facing a global pandemic that changed the world for ever.
@@ -102,7 +101,7 @@ Out of a 59 feature, I will be using only 38 including the ones mentioned above,
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown below with the screenshot:
 
-![](screenshots/Download&StoreDataset.png)
+![](starter_file/Screenshots/Download&StoreDataset.png)
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
@@ -181,7 +180,12 @@ After creating the HyperDriveConfig using the mentioned above parameters, we sub
 
 ## References:
 
+
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
+
 [2]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance
+
 [3]: https://covid.ourworldindata.org/data/owid-covid-data.csv
+
 [4]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
+
