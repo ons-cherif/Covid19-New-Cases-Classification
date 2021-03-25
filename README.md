@@ -178,7 +178,6 @@ After creating the HyperDriveConfig using the mentioned above parameters, we sub
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
 
 
-## References:
 
 
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
