@@ -99,9 +99,9 @@ This dataset contains a total number of 59 feature. Below an explanation of some
 Out of a 59 feature, I will be using only 38 including the ones mentioned above, along with my target column: `new_cases`. 
 
 ### Access
-In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown below with the screenshot:
+In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
 
-![](starter_file/Screenshots/Download&StoreDataset.png)
+![alt_text](Screenshots/Download&StoreDataset.png)
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
