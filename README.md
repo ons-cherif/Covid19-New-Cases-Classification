@@ -281,11 +281,11 @@ hyperdrive_run_config = HyperDriveConfig(
 
 [2]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance
 
-[3]: https://github.com/ons-cherif/GraduationUdacityProject/blob/master/starter_file/outputs/DataCleaningReport.html
+[3]: https://covid.ourworldindata.org/data/owid-covid-data.csv
 
-[4]: https://github.com/ons-cherif/GraduationUdacityProject/blob/master/starter_file/Covid19%20Dataset%20Analysis.ipynb
+[4]: https://github.com/ons-cherif/GraduationUdacityProject/blob/master/starter_file/outputs/DataCleaningReport.html
 
-[5]: https://covid.ourworldindata.org/data/owid-covid-data.csv
+[5]: https://github.com/ons-cherif/GraduationUdacityProject/blob/master/starter_file/Covid19%20Dataset%20Analysis.ipynb
 
 [6]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
 
