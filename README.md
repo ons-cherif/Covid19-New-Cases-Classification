@@ -30,7 +30,7 @@ A lot of researchs has revealed that the infection's globalization was caused by
 
 *Figure 1 : The following diagram shows the overall architecture and workflow of the project.*
 
-![](screenshots/Project_Architecture.png)
+![alt_text](screenshots/Project_Architecture.png)
 
 
 ## Project Set-Up and Installation
@@ -101,10 +101,10 @@ Out of a 59 feature, I will be using only 38 including the ones mentioned above,
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
 
-![alt_text](Screenshots/Download&StoreDataset.png)
+![alt_text](starter_file/Screenshots/Download&StoreDataset.PNG)
 
 ## Automated ML
-*TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
+
 ### Overview
 Exploring Automl, its utility and the way it works, makes me realize how I love this field and how much there is to learn from.
 I tried a wide range of settings and parameters, and what I can conclude is that whatever combination I used do really matter and directly impacts my model training.
@@ -125,17 +125,17 @@ The parameters used here are:
 
 * `n_cross_validation = 5` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
 * `primary_metric = 'accuracy'` : The primary metric parameter determines the metric to be used during model training for optimization. Accuracy primary metric is chosen for binary classification dataset.
-* `enable_early_stopping = True` : 
-* `experiment_timeout_hours = 1.0` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
+* `enable_early_stopping = True` : Whether to enable early termination if the score is not improving in the short term.
+* `experiment_timeout_hours = 1.0` : Maximum amount of time in hours that all iterations combined can take before the experiment terminates.
 * `max_concurrent_iterations = 4` : To help manage child runs and when they can be performed, we match the number of maximum concurrent iterations of our experiment to the number of nodes in the cluster. So, we get a dedicated cluster per experiment.
 * `task = 'classification'` : This specifies the experiment type as classification.
 * `compute_target = cpu_cluster` : Azure Machine Learning Managed Compute is a managed service that enables the ability to train machine learning models on clusters of Azure virtual machines. Here compute target is set to cpu_cluster which is already defined with 'STANDARD_D2_V2' and maximum nodes equal to 4.
 * `training_data = train_data` : This specifies the training data to be used in this experiment which is set to train_data which is a part of the dataset uploaded to the datastore.
 * `label_column_name = 'new_cases'` : The target column here is set to DEATH_EVENT which has values 1 if the patient deceased or 0 if the patient survived.
 * `featurization= 'auto'` : This indicates that as part of preprocessing, data guardrails and featurization steps are performed automatically.
-* `model_explainability=True`: 
+* `model_explainability = True`: Whether to enable explaining the best AutoML model at the end of all AutoML training iterations.
 * `path=project_folder`:
-* `debug_log = "Covid_automl_errors.log"`:
+* `debug_log = "Covid_automl_errors.log"`: The log file to write debug information to. If not specified, 'automl.log' is used.
 
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
@@ -143,8 +143,6 @@ The parameters used here are:
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
 ## Hyperparameter Tuning
-
-*TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
 
 It is common for classification models to predict a continuous value as the probability of a given example belonging to each output class.<br>
 
@@ -154,22 +152,35 @@ Using HyperDrive is like automating a manual process to figure out the best comb
 
 To prepare the HyperDrive configuration, we need to set three major parameters including:<br>
 
-*1- Specify a parameter sampler: * Since we are using the SKLearn LogisticRegression classifier we will be using:
+*1- Specify a parameter sampler: * There are three types of sampling: Bayesian, random or Grid sampling, which supports discrete hyperparameters with the possibility to exhaustively search over the search space with a possibility of an early termination of low-performance runs.
 
-* *`--C` : * The inverse of regularization strength C with a default value of 1.0, you need to specify a discrete set of options to sample from.
-* `--max_iter`:  the maximum number of iterations taken for the solvers to converge max_iter
+Here is a code snippet of the GridSampling definition with 2 parameters:
 
-*2- Specify an early termination policy:* Among three types, we decided to work with the Bandit Policy, classified as an aggressive saving, as it will terminate any job based on slack criteria, and a frequency and delay interval for evaluation.
+``` 
+param_sampling = GridParameterSampling( 
+    {
+        '--C': choice(0.01, 0.1, 1, 10, 100), 
+        '--max_iter': choice(25, 50, 100,150)
+    }
+)
 
-slack_factor: Specified as a ratio used to calculate the allowed distance from the best performing experiment run.
-evaluation_interval: Reflects the frequency for applying the policy.
-delay_evaluation: Reflects the number of intervals for which to delay the first policy evaluation.
+``` 
+
+* `--C` :  The inverse of regularization strength `C` with a default value of 1.0, you need to specify a discrete set of options to sample from. I used a range between _0.01 and 100_ to test the limits of regularization strenght and what is it's effect on the model.
+* `--max_iter`:  the maximum number of iterations taken for the solvers to converge `max_iter`. I chose four max iteration parameters: _25, 50, 100 and 150_.
+
+*2- Specify an early termination policy:* Among three types, I decided to work with the Bandit Policy, classified as an _aggressive saving_, as it will terminate any job based on slack criteria, and a frequency and delay interval for evaluation.
+
+* `slack_factor`: Specified as a ratio used to calculate the allowed distance from the best performing experiment run.
+* `evaluation_interval`: Reflects the frequency for applying the policy.
+* `delay_evaluation`: Reflects the number of intervals for which to delay the first policy evaluation.
 
 *3- Create a SKLearn estimator:* 
-The estimator contains the source directory, the path to the script directory, the compute target and the entry script The name of the script to use along with the experiment.
+The estimator contains the source directory, the path to the script directory, the compute target and the entry script which refers to the script's name to use along with the experiment. In my case, I used [TrainCovid19Infections.py](starter_file/TrainCovid19Infections.py)
 
-After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration like showed below:
-
+After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration:
+* `primary_metric_name`: The name of the primary metric needs to exactly match the name of the metric logged by the training script. Since I chose the Accuracy metric in my training script, I will be using the same within my HyperDriveConfig.
+* `primary_metric_goal=PrimaryMetricGoal.MAXIMIZE`: This can be Maximize or Minimize, but I chose to Maximize the accuracy.
 ``` 
 hyperdrive_run_config = HyperDriveConfig(
                                    hyperparameter_sampling = param_sampling,
