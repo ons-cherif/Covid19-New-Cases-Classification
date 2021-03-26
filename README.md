@@ -104,7 +104,7 @@ In order to be able to use the dataset, I downloaded it using `TabularDatasetFac
 ![alt_text](starter_file/Screenshots/Download&StoreDataset.PNG)
 
 ## Automated ML
-*TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
+
 ### Overview
 Exploring Automl, its utility and the way it works, makes me realize how I love this field and how much there is to learn from.
 I tried a wide range of settings and parameters, and what I can conclude is that whatever combination I used do really matter and directly impacts my model training.
@@ -125,17 +125,17 @@ The parameters used here are:
 
 * `n_cross_validation = 5` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
 * `primary_metric = 'accuracy'` : The primary metric parameter determines the metric to be used during model training for optimization. Accuracy primary metric is chosen for binary classification dataset.
-* `enable_early_stopping = True` : 
-* `experiment_timeout_hours = 1.0` : This defines how long, in minutes, our experiment should continue to run. Here this timeout is set to 30 minutes.
+* `enable_early_stopping = True` : Whether to enable early termination if the score is not improving in the short term.
+* `experiment_timeout_hours = 1.0` : Maximum amount of time in hours that all iterations combined can take before the experiment terminates.
 * `max_concurrent_iterations = 4` : To help manage child runs and when they can be performed, we match the number of maximum concurrent iterations of our experiment to the number of nodes in the cluster. So, we get a dedicated cluster per experiment.
 * `task = 'classification'` : This specifies the experiment type as classification.
 * `compute_target = cpu_cluster` : Azure Machine Learning Managed Compute is a managed service that enables the ability to train machine learning models on clusters of Azure virtual machines. Here compute target is set to cpu_cluster which is already defined with 'STANDARD_D2_V2' and maximum nodes equal to 4.
 * `training_data = train_data` : This specifies the training data to be used in this experiment which is set to train_data which is a part of the dataset uploaded to the datastore.
 * `label_column_name = 'new_cases'` : The target column here is set to DEATH_EVENT which has values 1 if the patient deceased or 0 if the patient survived.
 * `featurization= 'auto'` : This indicates that as part of preprocessing, data guardrails and featurization steps are performed automatically.
-* `model_explainability=True`: 
+* `model_explainability = True`: Whether to enable explaining the best AutoML model at the end of all AutoML training iterations.
 * `path=project_folder`:
-* `debug_log = "Covid_automl_errors.log"`:
+* `debug_log = "Covid_automl_errors.log"`: The log file to write debug information to. If not specified, 'automl.log' is used.
 
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
