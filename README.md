@@ -10,11 +10,11 @@ A lot of researchs has revealed that the infection's globalization was caused by
  
 
 ## Project Details
-* [Project Architecture](#project-architecture)
 * [Project Set Up and Installation](#project-set-up-and-installation)
 * [Dataset](#dataset)
   * [Overview](#overview)
   * [Task](#task)
+  * [Data Analysis](#data-analysis)
   * [Access](#access)
 * [Automated ML](#automated-ml)
   * [Results](#results)
@@ -23,12 +23,6 @@ A lot of researchs has revealed that the infection's globalization was caused by
 * [Model Deployment](#model-deployment)
 * [Screen Recording](#screen-recording)
 * [Improvements and Future Work](#improvements-and-future-work)
-
-## Project Architecture
-
-*Figure 1 : The following diagram shows the overall architecture and workflow of the project.*
-
-![alt_text](Screenshots/Project_Architecture.png)
 
 
 ## Project Set-Up and Installation
@@ -103,6 +97,8 @@ Before digginh into cleaning, splitting, training and testing. I began with the 
 Being able to know the strenghts and the weaknesses of our data is really important to pick the features and perfrom the cleaning before training the model.<br>
 
 I used the Pandas-Profiling library to visualize and generate a complete report about the data, the warnings, the individual parameters check, and all kind of test we may think of as a first step to know more about what we will be using. The generated report is accessible from <cite>[here][4]</cite> or explore directly the <cite>[Covid19DatasetAnalysis][5]</cite> notebook. <br>
+
+![alt_text](starter_file/Screenshots/PandasProfiling.PNG)
 
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
@@ -414,7 +410,7 @@ Afterwards, I used the `get_logs()` method to get the endpoint logs of the servi
 
 ![alt_text](starter_file/Screenshots/EndpointLogs.PNG)
 
-Once, the testing is done I deleted the service and the compute target using the below code snipped:
+Once, the testing is done I deleted the service and the compute target using the below code snipped: <br>
 
 ```
 service.delete()
@@ -422,7 +418,14 @@ cpu_cluster.delete()
 ```
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
+
+The screen Recording of this project, can be found on  <cite>[this Youtube link][8]</cite>. <br>
+
+This video contains: 
+
+- An Overview explanation about the used dataset
+- Data Analysis and exploration
+- Hyperdrive best model 
 - A working model
 - Demo of the deployed  model
 - Demo of a sample request sent to the endpoint and its response
@@ -450,4 +453,6 @@ cpu_cluster.delete()
 [6]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
 
 [7]: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-overview
+
+[8]: https://youtu.be/nDerXFyTf68
 
