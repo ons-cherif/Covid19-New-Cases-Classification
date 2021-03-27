@@ -186,7 +186,7 @@ Next, a scatter plot is generated to show the accuracy during the experiment and
   
 ![alt_text](starter_file/Screenshots/AutomlAccuracy.PNG)
   
-  ![alt_text](starter_file/Screenshots/DataAnalysis_PearsonCorrelation.PNG)
+![alt_text](starter_file/Screenshots/DataAnalysis_PearsonCorrelation.PNG)
   
   
 To explore the best model, which is VotingEnsemble, I retrieved it using `get_output()` function then played with it's metrics and different parameters using `get_metrics()`, as shown below:
@@ -240,11 +240,11 @@ param_sampling = GridParameterSampling(
 * `delay_evaluation`: Reflects the number of intervals for which to delay the first policy evaluation.
 
 *3- Create a SKLearn estimator:* 
-The estimator contains the source directory, the path to the script directory, the compute target and the entry script which refers to the script's name to use along with the experiment. In my case, I used [TrainCovid19Infections.py](starter_file/TrainCovid19Infections.py)
+The estimator contains the source directory, the path to the script directory, the compute target and the entry script which refers to the script's name to use along with the experiment. In my case, I used [TrainCovid19Infections.py](starter_file/TrainCovid19Infections.py).<br>
 
 After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration:
 * `primary_metric_name`: The name of the primary metric needs to exactly match the name of the metric logged by the training script. Since I chose the Accuracy metric in my training script, I will be using the same within my HyperDriveConfig.
-* `primary_metric_goal=PrimaryMetricGoal.MAXIMIZE`: This can be Maximize or Minimize, but I chose to Maximize the accuracy.
+* `primary_metric_goal=PrimaryMetricGoal.MAXIMIZE`: Primary metrinc goal is aiming to Maximized or Minimized the chosen primary metric. For this project I chose to Maximize the `accuracy` _primary metric_.
 ``` 
 hyperdrive_run_config = HyperDriveConfig(
                                    hyperparameter_sampling = param_sampling,
@@ -259,6 +259,9 @@ hyperdrive_run_config = HyperDriveConfig(
 
 ### Results
 *TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
+
+Once the experiment is submited, sevral runs will be queued to train each a different model tuning the hyperparameters. After the experiment is completed, and I explained above I registered the model and got the metrics by calling the `get_metrics()` function, as shown below:
+
 
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
