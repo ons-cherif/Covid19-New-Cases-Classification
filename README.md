@@ -180,7 +180,7 @@ It's easy to follow the run experiment by specifying `show_output=True` when sub
  
 Once the experiment is successfully completed, we can Run the `RunDetails` from the `Widget` library to visualize the diffrenet trained models, their status, the run Id and much more. Take a look at the below screenshot for more details: <br>
  
-![alt_text](starter_file/Screenshots/AutomlstatusRun.PNG)
+![alt_text](starter_file/Screenshots/AutomlstatusRun.png)
  
 Next, a scatter plot is generated to show the accuracy during the experiment and a plot using Pearson's Correlation: 
   
@@ -202,11 +202,13 @@ best_automl_run, best_automl_model = remote_run.get_output()
   
   * Explore the metrics of the best model:
   
-  ![alt_text](starter_file/Screenshots/AutomlBestModel.PNG)
+  ![alt_text](starter_file/Screenshots/AutomlBestModel.png)
   
   or directly from the Experiment section from Automl Studio portal: 
  
-  *Todo* Portal Automl
+  ![alt_text](starter_file/Screenshots/AutomlExperimentDetails.PNG)
+  
+  ![alt_text](starter_file/Screenshots/AutoMLBestModelPortal.PNG)
 
 ## Hyperparameter Tuning
 
