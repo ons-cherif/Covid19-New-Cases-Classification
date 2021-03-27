@@ -360,17 +360,17 @@ service = Model.deploy(workspace=ws,
  ```
 While deploying within the Python SDK, we can check for the status from the interactive output or visit the _Endpoints_ from AzureML Studio. And, as shown in the screenshots below, I succefully deployed the model,with a _Healthy_ endpoint status:<br>
 
-* Endpoint result using Automl python SDK:
+ * Endpoint result using Automl python SDK:
 
 ![alt_text](starter_file/Screenshots/AutomlModelDeploymentSDK.PNG)
 
-* Endpoint with active status visitin the _Endpoints_ section within the Azure Ml Studio Portal:
+ * Endpoint with active status visitin the _Endpoints_ section within the Azure Ml Studio Portal:
 
 ![alt_text](starter_file/Screenshots/HealthyEndPointDetails.png)
 
-* Endpoint Consume, containing Primary and Secondary key to use as tokens when calling the Api, along with a endpoint.py script to call directly the endpoint without passing by the SDK with the help of the _swagger.sh_ and the _serve.py_, which I already embeded within my project.
+ * Endpoint Consume, containing Primary and Secondary key to use as tokens when calling the Api, along with a endpoint.py script to call directly the endpoint without passing by the SDK with the help of the _swagger.sh_ and the _serve.py_, which I already embeded within my project.
 
-![alt_text](starter_file/Screenshots/AutomlEndpointConsume.png)
+![alt_text](starter_file/Screenshots/AutomlEndpointConsume.PNG)
 
 At this point, we can interact with the endpoint using _HTTP POST_ method from the python `requests` library. <br>
 But first, I provided a two data sample from the test dataset containing, converted to JSON format using `json.dumps()` and feeded the data to the endpoint. <br>
