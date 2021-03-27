@@ -1,0 +1,9 @@
+2021-03-23 11:49:57.900 - INFO - 30600 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-23 13:34:41.781 - INFO - 30600 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-23 18:46:33.163 - INFO - 19448 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-26 10:39:26.051 - INFO - 29166 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-26 10:57:26.288 - INFO - 29166 - azureml.train.automl.automlconfig._start_execution:206 - Submitting remote.
+2021-03-26 11:58:24.212 - INFO - 5591 - azureml.train.automl.automlconfig._start_execution:211 - Submitting remote.
+2021-03-26 12:20:03.774 - INFO - 18856 - azureml.train.automl.automlconfig._start_execution:211 - Submitting remote.
+2021-03-26 12:46:47.725 - INFO - 21913 - azureml.train.automl.automlconfig._start_execution:211 - Submitting remote.
+2021-03-26 21:53:04.408 - INFO - 23449 - azureml.train.automl.automlconfig._start_execution:211 - Submitting remote.
