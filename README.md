@@ -22,9 +22,7 @@ A lot of researchs has revealed that the infection's globalization was caused by
   * [Results](#results)
 * [Model Deployment](#model-deployment)
 * [Screen Recording](#screen-recording)
-* [Standout Suggestions](standout-suggestions)
 * [Improvements and Future Work](#improvements-and-future-work)
-* [References](#references)
 
 ## Project Architecture
 
@@ -360,11 +358,68 @@ service = Model.deploy(workspace=ws,
                        deployment_config=deployment_config,
                        overwrite=True)
  ```
+While deploying within the Python SDK, we can check for the status from the interactive output or visit the _Endpoints_ from AzureML Studio. And, as shown in the screenshots below, I succefully deployed the model,with a _Healthy_ endpoint status:<br>
 
+* Endpoint result using Automl python SDK:
 
+![alt_text](starter_file/Screenshots/AutomlModelDeploymentSDK.PNG)
 
+* Endpoint with active status visitin the _Endpoints_ section within the Azure Ml Studio Portal:
 
+![alt_text](starter_file/Screenshots/HealthyEndPointDetails.png)
 
+* Endpoint Consume, containing Primary and Secondary key to use as tokens when calling the Api, along with a endpoint.py script to call directly the endpoint without passing by the SDK with the help of the _swagger.sh_ and the _serve.py_, which I already embeded within my project.
+
+![alt_text](starter_file/Screenshots/AutomlEndpointConsume.png)
+
+At this point, we can interact with the endpoint using _HTTP POST_ method from the python `requests` library. <br>
+But first, I provided a two data sample from the test dataset containing, converted to JSON format using `json.dumps()` and feeded the data to the endpoint. <br>
+
+The below code snippet can explain the steps I peroformed to get and save the result: <br>
+
+ * Extracting Swagger required information to use within the endpoint call:
+```
+print("Key " + service.get_keys()[0])
+print("Swagger URI : "+service.swagger_uri)
+print("Scoring URI : "+service.scoring_uri)
+```
+ * The provided testing set:
+ 
+ ```
+ # testing the endpoint
+ x_test = validation_data.sample(2)
+ y_test = x_test['new_cases']
+ x_test.drop(['new_cases'], inplace=True, axis=1)
+```
+* Convert the data to fit to JSON:
+```
+Covid19DataTesting= json.dumps({'data': x_test.to_dict(orient='records')})
+```
+* Finally, make a call using the generated Json file and the Swagger token and send it to the REST endpoint:
+```
+headers = {'Content-type': 'application/json'}
+headers['Authorization'] = f'Bearer {service.get_keys()[0]}'
+
+# Make the request and display the response
+response = requests.post(service.scoring_uri, Covid19DataTesting, headers=headers)
+print('Prediction :', response.text)
+
+# Print original labels
+print('True Values :', y_test.values)
+```
+
+![alt_text](starter_file/Screenshots/TestingEndpoint.PNG)
+
+Afterwards, I used the `get_logs()` method to get the endpoint logs of the service:
+
+![alt_text](starter_file/Screenshots/EndpointLogs.PNG)
+
+Once, the testing is done I deleted the service and the compute target using the below code snipped:
+
+```
+service.delete()
+cpu_cluster.delete()
+```
 
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
@@ -372,11 +427,15 @@ service = Model.deploy(workspace=ws,
 - Demo of the deployed  model
 - Demo of a sample request sent to the endpoint and its response
 
-## Standout Suggestions
-*TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+## Improvements and Future Work
 
+* Exploring the profiling report generated ealier to analyse the data, revealed sveral warnings about the dataset. And since, the data is most important phase of an AI problem resolving, I will make sure to efficiently clean the data and fix any related problems for a better prediction. 
 
+* As explained above about cross validation, low bias and downfitting are really important and make a direct impct to the trained model whe passed as paramerters with `AutoMLConfig`: I entend to tune the k value and retrain the model to compare it with the actual one. 
 
+* For the HyperDrive, tuning the parameters is really important as well, so I think I will provide more choices within the parameter sampling and compare with the actual results. 
+
+* Finally, I am really curious about the onnx deployment, since I didn't find time to run it, I will definetly deploy and test the endpoint using _Onnx_ format.
 
 [1]: https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py
 
