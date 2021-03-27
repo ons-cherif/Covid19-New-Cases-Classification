@@ -98,6 +98,8 @@ Being able to know the strenghts and the weaknesses of our data is really import
 
 I used the Pandas-Profiling library to visualize and generate a complete report about the data, the warnings, the individual parameters check, and all kind of test we may think of as a first step to know more about what we will be using. The generated report is accessible from <cite>[here][4]</cite> or explore directly the <cite>[Covid19DatasetAnalysis][5]</cite> notebook. <br>
 
+![alt_text](starter_file/Screenshots/PandasProfiling.PNG)
+
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
 
