@@ -30,7 +30,7 @@ A lot of researchs has revealed that the infection's globalization was caused by
 
 *Figure 1 : The following diagram shows the overall architecture and workflow of the project.*
 
-![alt_text](screenshots/Project_Architecture.png)
+![alt_text](Screenshots/Project_Architecture.png)
 
 
 ## Project Set-Up and Installation
@@ -52,7 +52,7 @@ I used the same documentation to create a workspace, but if we were using Udacit
 
 ### Set up a Compute Instance:
 
-Once we created a workspace to hold all our experiments and trained models, we need to create a compute instance to run our scripts using Notebboks under Studio ML.
+Once we created a workspace to hold all our experiments and trained models, we need to create a compute instance to run our scripts using Notebooks under Studio ML.
 A compute Instance helps data science community to use pre-built Azure Machine Learning functionalities, manage security and performance. 
 
 Microsoft defines a compute instance as: <br>
@@ -96,7 +96,16 @@ This dataset contains a total number of 59 feature. Below an explanation of some
   * `diabetes_prevalence` : Diabetes prevalence (% of population aged 20 to 79) in 2017
   * `life_expectancy` : Life expectancy at birth in 2019.
   * `new_cases` : New confirmed cases of COVID-19.
+  
 Out of a 59 feature, I will be using only 38 including the ones mentioned above, along with my target column: `new_cases`. 
+
+### Data Analysis
+
+Before digginh into cleaning, splitting, training and testing. I began with the first phase whatever was the project or the problem to solve: Data Analysis and exploring.<br>
+
+Being able to know the strenghts and the weaknesses of our data is really important to pick the features and perfrom the cleaning before training the model.<br>
+
+I used the Pandas-Profiling library to visualize and generate a complete report about the data, the warnings, the individual parameters check, and all kind of test we may think of as a first step to know more about what we will be using. The generated report is accessible from <cite>[here][4]</cite> or explore directly the <cite>[Covid19DatasetAnalysis][5]</cite> notebook. <br>
 
 ### Access
 In order to be able to use the dataset, I downloaded it using `TabularDatasetFactory` and stored it within a datastore using the `register` function as shown with the below screenshot:
@@ -106,24 +115,22 @@ In order to be able to use the dataset, I downloaded it using `TabularDatasetFac
 ## Automated ML
 
 ### Overview
-Exploring Automl, its utility and the way it works, makes me realize how I love this field and how much there is to learn from.
-I tried a wide range of settings and parameters, and what I can conclude is that whatever combination I used do really matter and directly impacts my model training.
+Exploring Automl, its utility and the way it works, makes me realize how I love this field and how much there is to learn.
+I tried a wide range of settings and parameters, and what I can conclude is that whatever combination I used do really matter and directly impacts my model training.<br>
 
-To start let's define what is Automl and whew we use it, and for that we cnat's find better then Microsft's documentation:
+To start let's define what is Automl and whew we use it, and for that we cnat's find better then Microsft's documentation:<br>
 > Automated machine learning, also referred to as automated ML or AutoML, is the process of automating the time consuming, iterative tasks of machine learning model development. It allows data scientists, analysts, and developers to build ML models with high scale, efficiency, and productivity all while sustaining model quality. 
-> --<cite>[Automated ML][4]</cite>
+> --<cite>[Automated ML][6]</cite>
 
 Automated machine learning is the process of automating the time consuming, iterative tasks of machine learning model development. 
 
-AutoML is used to automate the repetitive tasks by creating a number of pipelines in parallel that try different algorithms and parameters. This iterates through ML  algorithms paired with feature selections, where each iteration produces a model with a training score. The higher the score, the better the model is considered to fit the   data. This process terminates when the exit criteria defined in the experiment is satisfied.
+AutoML is used to automate the repetitive tasks by creating a number of pipelines in parallel that try different algorithms and parameters. This iterates through ML algorithms paired with feature selections, where each iteration produces a model with a training score. The higher the score, the better the model is considered to fit the data. This process terminates when the exit criteria defined in the experiment is satisfied.
 
 ### AutoML Configuration
 
-Instantiate an AutoMLConfig object for AutoML Configuration.
+Instantiate an AutoMLConfig object for AutoML Configuration. The parameters used here are:
 
-The parameters used here are:
-
-* `n_cross_validation = 5` : Since our dataset is small. We apply cross validation with 3 folds instead of train/validation data split.
+* `n_cross_validation = 5` : Typically, when it comes to k-fold cross-validation parameter tuning within Machine learning projects to use k = 5 or k=10, as these values have been shown empirically to yield test error rate estimates that suffer neither from excessively high bias nor from very high variance.
 * `primary_metric = 'accuracy'` : The primary metric parameter determines the metric to be used during model training for optimization. Accuracy primary metric is chosen for binary classification dataset.
 * `enable_early_stopping = True` : Whether to enable early termination if the score is not improving in the short term.
 * `experiment_timeout_hours = 1.0` : Maximum amount of time in hours that all iterations combined can take before the experiment terminates.
@@ -134,13 +141,72 @@ The parameters used here are:
 * `label_column_name = 'new_cases'` : The target column here is set to DEATH_EVENT which has values 1 if the patient deceased or 0 if the patient survived.
 * `featurization= 'auto'` : This indicates that as part of preprocessing, data guardrails and featurization steps are performed automatically.
 * `model_explainability = True`: Whether to enable explaining the best AutoML model at the end of all AutoML training iterations.
-* `path=project_folder`:
 * `debug_log = "Covid_automl_errors.log"`: The log file to write debug information to. If not specified, 'automl.log' is used.
 
+As showing below, this is how I configured my Automl settings:
+
+```
+# Configure Automl settings
+automl_settings = {
+    "n_cross_validations": 5,
+    "primary_metric": 'accuracy',
+    "enable_early_stopping": True,
+    "experiment_timeout_hours": 1.0,
+    "max_concurrent_iterations": 4,
+}
+automl_config = AutoMLConfig(task = 'classification',
+                             compute_target = cpu_cluster,
+                             training_data = training_dataset,
+                             label_column_name = 'new_cases',
+                             featurization= 'auto',
+                             path=project_folder,
+                             model_explainability=True,
+                             debug_log = "Covid_automl_errors.log",
+                             **automl_settings)
+```
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+Once the experiment is submitted, a bunch of jobs will be queued before starting the training phrase such as: 
+
+  * FeaturesGeneration
+  * DatasetFeaturization
+  * DatasetCrossValidationSplit
+  * ModelSelection
+  
+It's easy to follow the run experiment by specifying `show_output=True` when submitting the experiment:
+ 
+![alt_text](starter_file/Screenshots/AutomlSubmitExp.PNG)
+ 
+Once the experiment is successfully completed, we can Run the `RunDetails` from the `Widget` library to visualize the diffrenet trained models, their status, the run Id and much more. Take a look at the below screenshot for more details: <br>
+ 
+![alt_text](starter_file/Screenshots/AutomlstatusRun.PNG)
+ 
+Next, a scatter plot is generated to show the accuracy during the experiment and a plot using Pearson's Correlation: 
+  
+![alt_text](starter_file/Screenshots/AutomlAccuracy.PNG)
+  
+![alt_text](starter_file/Screenshots/DataAnalysis_PearsonCorrelation.PNG)
+  
+  
+To explore the best model, which is VotingEnsemble, I retrieved it using `get_output()` function then played with it's metrics and different parameters using `get_metrics()`, as shown below:
+
+```
+# Retrieve and save best model.
+best_automl_run, best_automl_model = remote_run.get_output()
+```
+
+  * The best AutoML Run Details with its Run Id is shown below :
+  
+  ![alt_text](starter_file/Screenshots/BestAutomlRunId.PNG)
+  
+  * Explore the metrics of the best model:
+  
+  ![alt_text](starter_file/Screenshots/AutomlBestModel.PNG)
+  
+  or directly from the Experiment section from Automl Studio portal: 
+ 
+  *Todo* Portal Automl
 
 ## Hyperparameter Tuning
 
@@ -152,7 +218,7 @@ Using HyperDrive is like automating a manual process to figure out the best comb
 
 To prepare the HyperDrive configuration, we need to set three major parameters including:<br>
 
-*1- Specify a parameter sampler: * There are three types of sampling: Bayesian, random or Grid sampling, which supports discrete hyperparameters with the possibility to exhaustively search over the search space with a possibility of an early termination of low-performance runs.
+*1- Specify a parameter sampler: * There are three types of sampling: Bayesian, random or Grid sampling, which supports discrete hyperparameters with the possibility to exhaustively search over the search space with a possibility of an early termination of low-performance runs.<br>
 
 Here is a code snippet of the GridSampling definition with 2 parameters:
 
@@ -163,9 +229,7 @@ param_sampling = GridParameterSampling(
         '--max_iter': choice(25, 50, 100,150)
     }
 )
-
-``` 
-
+```
 * `--C` :  The inverse of regularization strength `C` with a default value of 1.0, you need to specify a discrete set of options to sample from. I used a range between _0.01 and 100_ to test the limits of regularization strenght and what is it's effect on the model.
 * `--max_iter`:  the maximum number of iterations taken for the solvers to converge `max_iter`. I chose four max iteration parameters: _25, 50, 100 and 150_.
 
@@ -176,11 +240,11 @@ param_sampling = GridParameterSampling(
 * `delay_evaluation`: Reflects the number of intervals for which to delay the first policy evaluation.
 
 *3- Create a SKLearn estimator:* 
-The estimator contains the source directory, the path to the script directory, the compute target and the entry script which refers to the script's name to use along with the experiment. In my case, I used [TrainCovid19Infections.py](starter_file/TrainCovid19Infections.py)
+The estimator contains the source directory, the path to the script directory, the compute target and the entry script which refers to the script's name to use along with the experiment. In my case, I used [TrainCovid19Infections.py](starter_file/TrainCovid19Infections.py).<br>
 
 After creating the HyperDriveConfig using the mentioned above parameters, we submit the experiment by specifying the recently created HyeperDrive configuration:
 * `primary_metric_name`: The name of the primary metric needs to exactly match the name of the metric logged by the training script. Since I chose the Accuracy metric in my training script, I will be using the same within my HyperDriveConfig.
-* `primary_metric_goal=PrimaryMetricGoal.MAXIMIZE`: This can be Maximize or Minimize, but I chose to Maximize the accuracy.
+* `primary_metric_goal=PrimaryMetricGoal.MAXIMIZE`: Primary metrinc goal is aiming to Maximized or Minimized the chosen primary metric. For this project I chose to Maximize the `accuracy` _primary metric_.
 ``` 
 hyperdrive_run_config = HyperDriveConfig(
                                    hyperparameter_sampling = param_sampling,
@@ -195,6 +259,9 @@ hyperdrive_run_config = HyperDriveConfig(
 
 ### Results
 *TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
+
+Once the experiment is submited, sevral runs will be queued to train each a different model tuning the hyperparameters. After the experiment is completed, and I explained above I registered the model and got the metrics by calling the `get_metrics()` function, as shown below:
+
 
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
@@ -219,5 +286,9 @@ hyperdrive_run_config = HyperDriveConfig(
 
 [3]: https://covid.ourworldindata.org/data/owid-covid-data.csv
 
-[4]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
+[4]: https://github.com/ons-cherif/GraduationUdacityProject/blob/master/starter_file/outputs/DataCleaningReport.html
+
+[5]: https://github.com/ons-cherif/GraduationUdacityProject/blob/master/starter_file/Covid19%20Dataset%20Analysis.ipynb
+
+[6]: https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml
 
