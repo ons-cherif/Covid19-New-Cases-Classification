@@ -182,13 +182,24 @@ Once the experiment is successfully completed, we can Run the `RunDetails` from 
  
 ![alt_text](starter_file/Screenshots/AutomlstatusRun.png)
  
-Next, a scatter plot is generated to show the accuracy during the experiment and a plot using Pearson's Correlation: 
+*Next, a scatter plot is generated to show the accuracy during the experiment and a plot using Pearson's Correlation: *
   
 ![alt_text](starter_file/Screenshots/AutomlAccuracy.PNG)
   
 ![alt_text](starter_file/Screenshots/DataAnalysis_PearsonCorrelation.PNG)
+
+*The figure below explains the ROC for the AutoML run:*
+
+![alt_text](starter_file/Screenshots/AutomlROC.PNG)
+
+*New Cases clustered for Africa's continent:*
+
+![alt_text](starter_file/Screenshots/AutomlNewDeathsWithinAfricaContinent.PNG)
+
+*Individual Feature Importance Plot for all the Covid19 cases:*
   
-  
+![alt_text](starter_file/Screenshots/AutomlIndividualFeatureImportance.PNG)
+ 
 To explore the best model, which is VotingEnsemble, I retrieved it using `get_output()` function then played with it's metrics and different parameters using `get_metrics()`, as shown below:
 
 ```
@@ -262,10 +273,32 @@ hyperdrive_run_config = HyperDriveConfig(
 ### Results
 *TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
 
-Once the experiment is submited, sevral runs will be queued to train each a different model tuning the hyperparameters. After the experiment is completed, and I explained above I registered the model and got the metrics by calling the `get_metrics()` function, as shown below:
+Once the experiment is submited, sevral runs will be queued to training each a different model while tuning the hyperparameters. When the experiment is complete, I extracted the details of the submitted run via `RunDteails` widget as shown below:
+
+![alt_text](starter_file/Screenshots/HyperDriveRunningStatus.png)
 
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+![alt_text](starter_file/Screenshots/HyperdriveExperimentRunMetrics.PNG)
+
+Below the experiment's regularization strength chart, showing the coordination between the different runs during the experiment within the `--C` parameter:
+
+![alt_text](starter_file/Screenshots/HyperDriveRegularizationStrengthofAllRuns.PNG)
+
+After getting the experiment's result, I extracted the best model using `get_best_run_by_primary_metric()` and its parameters using `get_metrics()`. In my case the Accuracy of the best model is  _0.740_ with a _--c= 0.1_ and a _--max_iter= 25_ like shown in the screenshots below:
+
+![alt_text](starter_file/Screenshots/hyperparameterbestModelMetrics.PNG)
+
+![alt_text](starter_file/Screenshots/HyperDriveBestRunDetails.png)
+
+![alt_text](starter_file/Screenshots/HyperdriveExperimentRunMetrics.PNG)
+
+Last but not least, I registered the best model using `register_model` function and printed out its name and version:
+
+```
+#Save the best model
+Hyp_DrCovid19_Model = best_run_HyperDr.register_model(model_name="HyperDrCovid19Model", model_path='outputs/model.joblib')
+print(Hyp_DrCovid19_Model.name,": Version Number",Hyp_DrCovid19_Model.version, sep='\t')
+```
 
 ## Model Deployment
 *TODO*: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
