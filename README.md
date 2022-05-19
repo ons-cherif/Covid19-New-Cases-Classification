@@ -111,7 +111,7 @@ In order to be able to use the dataset, I downloaded it using `TabularDatasetFac
 Exploring Automl, its utility and the way it works, makes me realize how I love this field and how much there is to learn.
 I tried a wide range of settings and parameters, and what I can conclude is that whatever combination I used do really matter and directly impacts my model training.<br>
 
-To start let's define what is Automl and whew we use it, and for that we cnat's find better then Microsft's documentation:<br>
+To start let's define what is Automl and how we use it, and for that we can't find better then Microsft's documentation:<br>
 > Automated machine learning, also referred to as automated ML or AutoML, is the process of automating the time consuming, iterative tasks of machine learning model development. It allows data scientists, analysts, and developers to build ML models with high scale, efficiency, and productivity all while sustaining model quality. 
 > --<cite>[Automated ML][6]</cite>
 
